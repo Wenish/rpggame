@@ -8,24 +8,29 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     float walkMoveStopRadius = 0.2f;
 
-    ThirdPersonCharacter m_Character;   // A reference to the ThirdPersonCharacter on the object
+    ThirdPersonCharacter thirdPersonCharacter;   // A reference to the ThirdPersonCharacter on the object
     CameraRaycaster cameraRaycaster;
     Vector3 currentClickTarget;
         
     private void Start()
     {
         cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
-        m_Character = GetComponent<ThirdPersonCharacter>();
+        thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
         currentClickTarget = transform.position;
     }
 
     // Fixed update is called in sync with physics
     private void FixedUpdate()
     {
+        ProcessMouseMovement();
+    }
+
+    private void ProcessMouseMovement()
+    {
         if (Input.GetMouseButton(0))
         {
             print("Cursor raycast hit" + cameraRaycaster.hit.collider.gameObject.name.ToString());
-            switch (cameraRaycaster.layerHit)
+            switch (cameraRaycaster.currentLayerHit)
             {
                 case Layer.Walkable:
                     currentClickTarget = cameraRaycaster.hit.point;
@@ -43,10 +48,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (playerToClickPoint.magnitude >= walkMoveStopRadius)
         {
-            m_Character.Move(playerToClickPoint, false, false);
-        } else
+            thirdPersonCharacter.Move(playerToClickPoint, false, false);
+        }
+        else
         {
-            m_Character.Move(Vector3.zero, false, false);
+            thirdPersonCharacter.Move(Vector3.zero, false, false);
         }
     }
 }
