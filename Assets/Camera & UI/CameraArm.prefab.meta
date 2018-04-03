@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: 6601a2a30cbaf3c42ac7a4026ad0d1ad
+labels:
+- SceneSetup
 timeCreated: 1522100906
 licenseType: Free
 NativeFormatImporter:
