@@ -1,82 +1,56 @@
 using System;
 using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(AICharacterControl))]
 [RequireComponent(typeof (ThirdPersonCharacter))]
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField]
-    float walkMoveStopRadius = 0.2f;
-
-    [SerializeField]
-    float attackMoveStopRadius = 5f;
-
-    ThirdPersonCharacter thirdPersonCharacter;   // A reference to the ThirdPersonCharacter on the object
-    CameraRaycaster cameraRaycaster;
+    ThirdPersonCharacter thirdPersonCharacter = null;   // A reference to the ThirdPersonCharacter on the object
+    CameraRaycaster cameraRaycaster = null;
     Vector3 currentDestination, clickPoint;
-        
-    private void Start()
+    AICharacterControl aICharacterControl = null;
+    GameObject walkTarget = null;
+
+    [SerializeField]
+    const int walkableLayerNumber = 8;
+
+    [SerializeField]
+    const int enemyLayerNumber = 9;
+
+    void Start()
     {
         cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
         thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
         currentDestination = transform.position;
+        aICharacterControl = GetComponent<AICharacterControl>();
+        walkTarget = new GameObject("walkTarget");
+
+        cameraRaycaster.notifyMouseClickObservers += ProcessMouseClick;
     }
 
-
-    //private void ProcessMouseMovement()
-    //{
-    //    if (Input.GetMouseButton(0))
-    //    {
-    //        print("Cursor raycast hit" + cameraRaycaster.hit.collider.gameObject.name.ToString());
-    //        clickPoint = cameraRaycaster.hit.point;
-    //        switch (cameraRaycaster.currentLayerHit)
-    //        {
-    //            case Layer.Walkable:
-    //                currentDestination = ShortDestination(clickPoint, walkMoveStopRadius);
-    //                break;
-    //            case Layer.Enemy:
-    //                currentDestination = ShortDestination(clickPoint, attackMoveStopRadius);
-    //                break;
-    //            default:
-    //                print("Unexpected layer found");
-    //                return;
-    //        }
-    //    }
-
-    //    WalkToDestination();
-    //}
-
-    private void WalkToDestination()
+    void ProcessMouseClick(RaycastHit raycastHit, int layerHit)
     {
-        var playerToClickPoint = currentDestination - transform.position;
-
-        if (playerToClickPoint.magnitude >= 0)
+        switch(layerHit)
         {
-            thirdPersonCharacter.Move(playerToClickPoint, false, false);
+            case enemyLayerNumber:
+                //navigate to the enemy
+                GameObject enemy = raycastHit.collider.gameObject;
+                aICharacterControl.SetTarget(enemy.transform);
+                break;
+            case walkableLayerNumber:
+                //navigate to point on the ground
+                walkTarget.transform.position = raycastHit.point;
+                aICharacterControl.SetTarget(walkTarget.transform);
+                break;
+            default:
+                Debug.LogWarning("Don't know how to handle mouse click");
+                return;
+            
         }
-        else
-        {
-            thirdPersonCharacter.Move(Vector3.zero, false, false);
-        }
-    }
 
-    private Vector3 ShortDestination(Vector3 destination, float shortening)
-    {
-        Vector3 reductionVector = (destination - transform.position).normalized * shortening;
-        return destination - reductionVector;
-    }
-
-    void OnDrawGizmos()
-    {
-        //Draw movement gizmos
-        Gizmos.color = Color.black;
-        Gizmos.DrawLine(transform.position, clickPoint);
-        Gizmos.DrawSphere(currentDestination, 0.15f);
-        Gizmos.DrawSphere(clickPoint, 0.1f);
-
-        //Draw attack sphere
-        Gizmos.color = new Color(255f, 0f, 0, .5f);
-        Gizmos.DrawWireSphere(transform.position, attackMoveStopRadius);
     }
 }
 
