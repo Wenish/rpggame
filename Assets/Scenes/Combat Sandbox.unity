@@ -156,16 +156,36 @@ Prefab:
     m_TransformParent: {fileID: 2142517949}
     m_Modifications:
     - target: {fileID: 408730, guid: e5e7d0df1ba913d42a986a9ee54171c5, type: 2}
-      propertyPath: m_RootOrder
-      value: 1
+      propertyPath: m_LocalPosition.x
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 408730, guid: e5e7d0df1ba913d42a986a9ee54171c5, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -0.28
+      propertyPath: m_LocalPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 408730, guid: e5e7d0df1ba913d42a986a9ee54171c5, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 6.24
+      value: 10.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 408730, guid: e5e7d0df1ba913d42a986a9ee54171c5, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 408730, guid: e5e7d0df1ba913d42a986a9ee54171c5, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 408730, guid: e5e7d0df1ba913d42a986a9ee54171c5, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 408730, guid: e5e7d0df1ba913d42a986a9ee54171c5, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 408730, guid: e5e7d0df1ba913d42a986a9ee54171c5, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e5e7d0df1ba913d42a986a9ee54171c5, type: 2}
@@ -249,7 +269,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 408730, guid: e5e7d0df1ba913d42a986a9ee54171c5, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 149790, guid: e5e7d0df1ba913d42a986a9ee54171c5, type: 2}
       propertyPath: m_Name
@@ -295,7 +315,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 408730, guid: e5e7d0df1ba913d42a986a9ee54171c5, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 149790, guid: e5e7d0df1ba913d42a986a9ee54171c5, type: 2}
       propertyPath: m_Name
@@ -743,6 +763,10 @@ Prefab:
     - target: {fileID: 4813175068764648, guid: 59b950e4ec9bcab4c89e53efb982f2cd, type: 2}
       propertyPath: m_RootOrder
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1323679500608286, guid: 59b950e4ec9bcab4c89e53efb982f2cd, type: 2}
+      propertyPath: m_Name
+      value: Terrain
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 59b950e4ec9bcab4c89e53efb982f2cd, type: 2}
