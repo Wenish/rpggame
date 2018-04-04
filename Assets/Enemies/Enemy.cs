@@ -5,29 +5,24 @@ using UnityStandardAssets.Characters.ThirdPerson;
 
 public class Enemy : MonoBehaviour, IDamageable {
 
-    [SerializeField]
-    float maxHealthPoints = 100f;
+    [SerializeField] float maxHealthPoints = 100f;
 
-    [SerializeField]
-    float chaseRadius = 9f;
+    [SerializeField] float chaseRadius = 9f;
 
-    [SerializeField]
-    float attackRadius = 4f;
+    [SerializeField] float attackRadius = 4f;
 
-    [SerializeField]
-    float damagePerShot = 20f;
+    [SerializeField] float damagePerShot = 20f;
 
-    [SerializeField]
-    float attackSpeed = 0.5f;
+    [SerializeField] float attackSpeed = 0.5f;
 
 
-    [SerializeField]
-    GameObject projectileToUse = null;
+    [SerializeField] GameObject projectileToUse = null;
 
-    [SerializeField]
-    GameObject projectileSocket;
+    [SerializeField] GameObject projectileSocket;
 
-    float currentHealthPoints = 100f;
+    [SerializeField] Vector3 aimOffset = new Vector3(0, 1f, 0);
+
+    float currentHealthPoints;
 
     AICharacterControl aICharacterControl = null;
     GameObject player = null;
@@ -44,10 +39,15 @@ public class Enemy : MonoBehaviour, IDamageable {
     public void TakeDamage(float damage)
     {
         currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+        if(currentHealthPoints <= 0 )
+        {
+            Destroy(gameObject);
+        }
     }
 
     void Start()
     {
+        currentHealthPoints = maxHealthPoints;
         player = GameObject.FindGameObjectWithTag("Player");
         aICharacterControl = GetComponent<AICharacterControl>();
     }
@@ -85,7 +85,7 @@ public class Enemy : MonoBehaviour, IDamageable {
 
         Projectile projectileComponent = newProjectile.GetComponent<Projectile>();
         projectileComponent.SetDamage(damagePerShot);
-        Vector3 unitVectorToPlayer = (player.transform.position - projectileSocket.transform.position).normalized;
+        Vector3 unitVectorToPlayer = (player.transform.position + aimOffset - projectileSocket.transform.position).normalized;
         float projectileSpeed = projectileComponent.projectileSpeed;
         newProjectile.GetComponent<Rigidbody>().velocity = unitVectorToPlayer * projectileSpeed;
 

@@ -1,13 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IDamageable {
 
-    [SerializeField]
-    float maxHealthPoints = 100f;
+    [SerializeField] int enemyLayer = 9;
+    [SerializeField] float maxHealthPoints = 100f;
+    [SerializeField] float attackDamage = 10;
+    [SerializeField] float attackSpeed = 0.5f;
+    [SerializeField] float maxAttackRange = 2f;
 
-    float currentHealthPoints = 100f;
+    GameObject currentTarget;
+    float currentHealthPoints;
+    CameraRaycaster cameraRaycaster;
+    float lastHitTime = 0f;
 
     public float healthAsPercentage
     {
@@ -17,12 +24,37 @@ public class Player : MonoBehaviour, IDamageable {
         }
     }
 
+    void Start()
+    {
+        currentHealthPoints = maxHealthPoints;
+        cameraRaycaster = FindObjectOfType<CameraRaycaster>();
+        cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
+    }
+
+    private void OnMouseClick(RaycastHit raycastHit, int layerHit)
+    {
+        if (layerHit == enemyLayer)
+        {
+            var enemy = raycastHit.collider.gameObject;
+
+            //Check enemy is not in range
+            if((enemy.transform.position - transform.position).magnitude > maxAttackRange)
+            {
+                return;
+            }
+
+            currentTarget = enemy;
+            var enemyComponent = enemy.GetComponent<Enemy>();
+            if(Time.time - lastHitTime > attackSpeed)
+            {
+                enemyComponent.TakeDamage(attackDamage);
+                lastHitTime = Time.time;
+            }
+        }
+    }
+
     public void TakeDamage(float damage)
     {
         currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
-        if(currentHealthPoints <= 0)
-        {
-            Destroy(gameObject);
-        }
     }
 }
