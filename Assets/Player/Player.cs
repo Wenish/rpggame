@@ -16,6 +16,8 @@ public class Player : MonoBehaviour, IDamageable {
     CameraRaycaster cameraRaycaster;
     float lastHitTime = 0f;
 
+    Animator animator;
+
     public float healthAsPercentage
     {
         get
@@ -29,6 +31,7 @@ public class Player : MonoBehaviour, IDamageable {
         currentHealthPoints = maxHealthPoints;
         cameraRaycaster = FindObjectOfType<CameraRaycaster>();
         cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
+        animator = GetComponent<Animator>();
     }
 
     private void OnMouseClick(RaycastHit raycastHit, int layerHit)
@@ -47,6 +50,7 @@ public class Player : MonoBehaviour, IDamageable {
             var enemyComponent = enemy.GetComponent<Enemy>();
             if(Time.time - lastHitTime > attackSpeed)
             {
+                animator.SetTrigger("Attack");
                 enemyComponent.TakeDamage(attackDamage);
                 lastHitTime = Time.time;
             }
