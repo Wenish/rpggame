@@ -9,13 +9,30 @@ public class Enemy : MonoBehaviour, IDamageable {
     float maxHealthPoints = 100f;
 
     [SerializeField]
+    float chaseRadius = 9f;
+
+    [SerializeField]
     float attackRadius = 4f;
+
+    [SerializeField]
+    float damagePerShot = 20f;
+
+    [SerializeField]
+    float attackSpeed = 0.5f;
+
+
+    [SerializeField]
+    GameObject projectileToUse = null;
+
+    [SerializeField]
+    GameObject projectileSocket;
 
     float currentHealthPoints = 100f;
 
     AICharacterControl aICharacterControl = null;
     GameObject player = null;
 
+    bool isAttacking = false;
     public float healthAsPercentage
     {
         get
@@ -38,12 +55,51 @@ public class Enemy : MonoBehaviour, IDamageable {
     void Update()
     {
         float distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
-        if(distanceToPlayer <= attackRadius)
+        if(distanceToPlayer <= attackRadius && !isAttacking)
+        {
+            isAttacking = true;
+            InvokeRepeating("SpawnProjectile", 0f, attackSpeed); //TODO switch to coroutines
+        }
+
+        if(distanceToPlayer > attackRadius)
+        {
+            CancelInvoke();
+            isAttacking = false;
+        }
+
+        if (distanceToPlayer <= chaseRadius)
         {
             aICharacterControl.SetTarget(player.transform);
-        } else
+        }
+        else
         {
             aICharacterControl.SetTarget(transform);
         }
+    }
+
+    void SpawnProjectile()
+    {
+        GameObject newProjectile = Instantiate(projectileToUse, projectileSocket.transform.position, projectileSocket.transform.rotation);
+
+        Destroy(newProjectile, 1f);
+
+        Projectile projectileComponent = newProjectile.GetComponent<Projectile>();
+        projectileComponent.SetDamage(damagePerShot);
+        Vector3 unitVectorToPlayer = (player.transform.position - projectileSocket.transform.position).normalized;
+        float projectileSpeed = projectileComponent.projectileSpeed;
+        newProjectile.GetComponent<Rigidbody>().velocity = unitVectorToPlayer * projectileSpeed;
+
+        
+    }
+
+    void OnDrawGizmos()
+    {
+        //Draw move sphere
+        Gizmos.color = Color.black;
+        Gizmos.DrawWireSphere(transform.position, chaseRadius);
+
+        //Draw attack sphere
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRadius);
     }
 }
