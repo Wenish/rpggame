@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Player : MonoBehaviour, IDamageable {
 
@@ -10,6 +11,7 @@ public class Player : MonoBehaviour, IDamageable {
     [SerializeField] float attackDamage = 10;
     [SerializeField] float attackSpeed = 0.5f;
     [SerializeField] float maxAttackRange = 2f;
+    [SerializeField] Transform spawnPoint = null;
 
     GameObject currentTarget;
     float currentHealthPoints;
@@ -32,6 +34,7 @@ public class Player : MonoBehaviour, IDamageable {
         cameraRaycaster = FindObjectOfType<CameraRaycaster>();
         cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
         animator = GetComponent<Animator>();
+        spawnPoint = GameObject.FindGameObjectWithTag("Respawn").transform;
     }
 
     private void OnMouseClick(RaycastHit raycastHit, int layerHit)
@@ -60,5 +63,15 @@ public class Player : MonoBehaviour, IDamageable {
     public void TakeDamage(float damage)
     {
         currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+        if(currentHealthPoints <= 0)
+        {
+            NavMeshAgent agent = GetComponent<NavMeshAgent>();
+            agent.enabled = false;
+            Transform transform = GetComponent<Transform>();
+            transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
+            agent.enabled = true;
+            agent.SetDestination(spawnPoint.position);
+            currentHealthPoints = maxHealthPoints;
+        }
     }
 }
