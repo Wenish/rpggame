@@ -30,7 +30,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 149790}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.12, y: 0, z: 1.91}
+  m_LocalPosition: {x: -35, y: 10, z: -44.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4641378313239312}
@@ -52,7 +52,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!95 &9579096
 Animator:
   serializedVersion: 3
@@ -2617,10 +2617,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyLayer: 9
-  maxHealthPoints: 100
+  maxHealthPoints: 1500
   attackDamage: 10
   attackSpeed: 0.5
   maxAttackRange: 2
+  spawnPoint: {fileID: 0}
 --- !u!137 &137647281158860526
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
@@ -2736,4 +2737,4 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
