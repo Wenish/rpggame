@@ -11,6 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5ffb3e2b90672049827c7f9b0595a03, type: 3}
   m_Name: Spear
   m_EditorClassIdentifier: 
+  gripTransform: {fileID: 4928301893938464, guid: 967eba68dd8affb4f9cce080a4694ccf,
+    type: 2}
   weaponPrefab: {fileID: 1596738806459538, guid: 2310ea0083d77aa4cb4198e489b79af9,
     type: 2}
   attackAnimation: {fileID: 0}

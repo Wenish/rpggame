@@ -2474,6 +2474,8 @@ MonoBehaviour:
   attackSpeed: 0.5
   maxAttackRange: 2
   spawnPoint: {fileID: 0}
+  weaponInUse: {fileID: 11400000, guid: cbb895b1fd394614ea0c1de4ccf922b8, type: 2}
+  weaponSocket: {fileID: 1831319998434726}
 --- !u!137 &137647281158860526
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
