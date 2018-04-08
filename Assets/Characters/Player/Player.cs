@@ -12,6 +12,7 @@ public class Player : MonoBehaviour, IDamageable {
     [SerializeField] float attackSpeed = 0.5f;
     [SerializeField] float maxAttackRange = 2f;
     [SerializeField] Transform spawnPoint = null;
+    [SerializeField] Weapon weaponInUse;
 
     GameObject currentTarget;
     float currentHealthPoints;
@@ -30,11 +31,26 @@ public class Player : MonoBehaviour, IDamageable {
 
     void Start()
     {
+        RegisterForMouseClick();
         currentHealthPoints = maxHealthPoints;
-        cameraRaycaster = FindObjectOfType<CameraRaycaster>();
-        cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
+        PutWeaponInHand();
+
+
         animator = GetComponent<Animator>();
         spawnPoint = GameObject.FindGameObjectWithTag("Respawn").transform;
+    }
+
+    private void PutWeaponInHand()
+    {
+        var weaponPrefab = weaponInUse.GetWeaponPrefab();
+        var weapon = Instantiate(weaponPrefab);
+        // TODO move to correct place and child to hand
+    }
+
+    private void RegisterForMouseClick()
+    {
+        cameraRaycaster = FindObjectOfType<CameraRaycaster>();
+        cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
     }
 
     private void OnMouseClick(RaycastHit raycastHit, int layerHit)
