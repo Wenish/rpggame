@@ -53,6 +53,7 @@ public class Player : MonoBehaviour, IDamageable {
             var enemyComponent = enemy.GetComponent<Enemy>();
             if(Time.time - lastHitTime > attackSpeed)
             {
+                transform.LookAt(enemy.transform);
                 animator.SetTrigger("Attack");
                 enemyComponent.TakeDamage(attackDamage);
                 lastHitTime = Time.time;
