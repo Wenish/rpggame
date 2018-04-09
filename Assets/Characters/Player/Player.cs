@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Assertions;
 
 public class Player : MonoBehaviour, IDamageable {
 
@@ -13,14 +14,10 @@ public class Player : MonoBehaviour, IDamageable {
     [SerializeField] float maxAttackRange = 2f;
     [SerializeField] Transform spawnPoint = null;
     [SerializeField] Weapon weaponInUse;
-    [SerializeField] GameObject weaponSocket;
 
-    GameObject currentTarget;
     float currentHealthPoints;
     CameraRaycaster cameraRaycaster;
     float lastHitTime = 0f;
-
-    Animator animator;
 
     public float healthAsPercentage
     {
@@ -35,18 +32,26 @@ public class Player : MonoBehaviour, IDamageable {
         RegisterForMouseClick();
         currentHealthPoints = maxHealthPoints;
         PutWeaponInHand();
-
-
-        animator = GetComponent<Animator>();
+        
         spawnPoint = GameObject.FindGameObjectWithTag("Respawn").transform;
     }
 
     private void PutWeaponInHand()
     {
         var weaponPrefab = weaponInUse.GetWeaponPrefab();
-        var weapon = Instantiate(weaponPrefab, weaponSocket.transform, true);
+        GameObject mainHand = RequestMainHand();
+        var weapon = Instantiate(weaponPrefab, mainHand.transform, true);
         weapon.transform.localPosition = weaponInUse.gripTransform.localPosition;
         weapon.transform.localRotation = weaponInUse.gripTransform.localRotation;
+    }
+
+    private GameObject RequestMainHand()
+    {
+        var mainHands = GetComponentsInChildren<MainHand>();
+        int numberOfMainHands = mainHands.Length;
+        Assert.IsFalse(numberOfMainHands <= 0, "No MainHand found on Character");
+        Assert.IsFalse(numberOfMainHands > 1, "Multiple MainHands found on Character");
+        return mainHands[0].gameObject;
     }
 
     private void RegisterForMouseClick()
@@ -55,6 +60,7 @@ public class Player : MonoBehaviour, IDamageable {
         cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
     }
 
+    //TODO refactor to reduce numbeer of lines
     private void OnMouseClick(RaycastHit raycastHit, int layerHit)
     {
         if (layerHit == enemyLayer)
@@ -66,13 +72,12 @@ public class Player : MonoBehaviour, IDamageable {
             {
                 return;
             }
-
-            currentTarget = enemy;
+            
             var enemyComponent = enemy.GetComponent<Enemy>();
             if(Time.time - lastHitTime > attackSpeed)
             {
+
                 transform.LookAt(enemy.transform);
-                animator.SetTrigger("Attack");
                 enemyComponent.TakeDamage(attackDamage);
                 lastHitTime = Time.time;
             }

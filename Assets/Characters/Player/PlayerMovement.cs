@@ -8,9 +8,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof (ThirdPersonCharacter))]
 public class PlayerMovement : MonoBehaviour
 {
-    ThirdPersonCharacter thirdPersonCharacter = null;   // A reference to the ThirdPersonCharacter on the object
     CameraRaycaster cameraRaycaster = null;
-    Vector3 currentDestination, clickPoint;
     AICharacterControl aICharacterControl = null;
     GameObject walkTarget = null;
 
@@ -23,8 +21,6 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
-        thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
-        currentDestination = transform.position;
         aICharacterControl = GetComponent<AICharacterControl>();
         walkTarget = new GameObject("walkTarget");
 
