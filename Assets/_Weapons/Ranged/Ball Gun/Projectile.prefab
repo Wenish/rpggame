@@ -23,8 +23,6 @@ GameObject:
   - component: {fileID: 23331370877720612}
   - component: {fileID: 135599789983413844}
   - component: {fileID: 54825178387380342}
-  - component: {fileID: 114057548083395236}
-  - component: {fileID: 114026092475280770}
   - component: {fileID: 114502117433942170}
   m_Layer: 0
   m_Name: Projectile
@@ -219,32 +217,6 @@ TrailRenderer:
     generateLightingData: 0
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
---- !u!114 &114026092475280770
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1452589115390902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daa7e0829bc72c94babd728cc0466196, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114057548083395236
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1452589115390902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e004fefca5c7ba44d9c5ffd46fdee2ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MovePower: 5
-  m_UseTorque: 1
-  m_MaxAngularVelocity: 25
-  m_JumpPower: 4
 --- !u!114 &114502117433942170
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -18,12 +18,11 @@ namespace RPG.Characters
         [SerializeField] int enemyLayer = 9;
         [SerializeField] float maxHealthPoints = 100f;
         [SerializeField] float attackDamage = 10;
-        [SerializeField] float attackSpeed = 0.5f;
-        [SerializeField] float maxAttackRange = 2f;
         [SerializeField] Transform spawnPoint = null;
         [SerializeField] Weapon weaponInUse;
         [SerializeField] AnimatorOverrideController animatorOverrideController;
 
+        Animator animator;
         float currentHealthPoints;
         CameraRaycaster cameraRaycaster;
         float lastHitTime = 0f;
@@ -41,10 +40,24 @@ namespace RPG.Characters
             RegisterForMouseClick();
             SetCurrentMaxHealth();
             PutWeaponInHand();
-
-            OverrideAnimatorController();
+            SetupRuntimeAnimator();
 
             spawnPoint = GameObject.FindGameObjectWithTag("Respawn").transform;
+        }
+
+        public void TakeDamage(float damage)
+        {
+            currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+            if (currentHealthPoints <= 0)
+            {
+                NavMeshAgent agent = GetComponent<NavMeshAgent>();
+                agent.enabled = false;
+                Transform transform = GetComponent<Transform>();
+                transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
+                agent.enabled = true;
+                agent.SetDestination(spawnPoint.position);
+                currentHealthPoints = maxHealthPoints;
+            }
         }
 
         private void SetCurrentMaxHealth()
@@ -52,9 +65,9 @@ namespace RPG.Characters
             currentHealthPoints = maxHealthPoints;
         }
 
-        private void OverrideAnimatorController()
+        private void SetupRuntimeAnimator()
         {
-            var animator = GetComponent<Animator>();
+            animator = GetComponent<Animator>();
             animator.runtimeAnimatorController = animatorOverrideController;
             animatorOverrideController["DEFAULT ATTACK"] = weaponInUse.GetAttackAnimationClip(); //TODOr remove const
         }
@@ -83,44 +96,38 @@ namespace RPG.Characters
             cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
         }
 
-        //TODO refactor to reduce numbeer of lines
         private void OnMouseClick(RaycastHit raycastHit, int layerHit)
         {
             if (layerHit == enemyLayer)
             {
                 var enemy = raycastHit.collider.gameObject;
 
-                //Check enemy is not in range
-                if ((enemy.transform.position - transform.position).magnitude > maxAttackRange)
+                if(IsTargetInRange(enemy))
                 {
-                    return;
+                    AttackTarget(enemy);
                 }
 
-                var enemyComponent = enemy.GetComponent<Enemy>();
-                if (Time.time - lastHitTime > attackSpeed)
-                {
-
-                    transform.LookAt(enemy.transform);
-                    enemyComponent.TakeDamage(attackDamage);
-                    lastHitTime = Time.time;
-                }
             }
         }
 
-        public void TakeDamage(float damage)
+        private void AttackTarget(GameObject target)
         {
-            currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
-            if (currentHealthPoints <= 0)
+            var enemyComponent = target.GetComponent<Enemy>();
+            if (Time.time - lastHitTime > weaponInUse.GetAttackSpeed())
             {
-                NavMeshAgent agent = GetComponent<NavMeshAgent>();
-                agent.enabled = false;
-                Transform transform = GetComponent<Transform>();
-                transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
-                agent.enabled = true;
-                agent.SetDestination(spawnPoint.position);
-                currentHealthPoints = maxHealthPoints;
+                animator.SetTrigger("Attack"); //TODO make const;
+                transform.LookAt(target.transform);
+                enemyComponent.TakeDamage(attackDamage);
+                lastHitTime = Time.time;
             }
         }
+
+        private bool IsTargetInRange(GameObject target)
+        {
+            float distanceToTarget = (target.transform.position - transform.position).magnitude;
+            return distanceToTarget <= weaponInUse.GetMaxAttackRange();
+        }   
+
     }
 
 }

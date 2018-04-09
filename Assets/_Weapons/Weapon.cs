@@ -11,6 +11,18 @@ namespace RPG.Weapons
         public Transform gripTransform;
         [SerializeField] GameObject weaponPrefab;
         [SerializeField] AnimationClip attackAnimation;
+        [SerializeField] float attackSpeed = 0.5f;
+        [SerializeField] float maxAttackRange = 2f;
+
+        public float GetAttackSpeed()
+        {
+            return attackSpeed;
+        }
+
+        public float GetMaxAttackRange()
+        {
+            return maxAttackRange;
+        }
 
         public GameObject GetWeaponPrefab()
         {
