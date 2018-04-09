@@ -26,7 +26,6 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		Vector3 m_GroundNormal;
 
 
-
 		void Start()
 		{
 			m_Animator = GetComponent<Animator>();
