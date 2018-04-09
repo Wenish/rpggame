@@ -2487,6 +2487,8 @@ MonoBehaviour:
   maxAttackRange: 2
   spawnPoint: {fileID: 0}
   weaponInUse: {fileID: 11400000, guid: cbb895b1fd394614ea0c1de4ccf922b8, type: 2}
+  animatorOverrideController: {fileID: 22100000, guid: a3ceab425a5c4a641be1851430d79054,
+    type: 2}
 --- !u!137 &137647281158860526
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

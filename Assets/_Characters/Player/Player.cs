@@ -22,6 +22,7 @@ namespace RPG.Characters
         [SerializeField] float maxAttackRange = 2f;
         [SerializeField] Transform spawnPoint = null;
         [SerializeField] Weapon weaponInUse;
+        [SerializeField] AnimatorOverrideController animatorOverrideController;
 
         float currentHealthPoints;
         CameraRaycaster cameraRaycaster;
@@ -38,10 +39,24 @@ namespace RPG.Characters
         void Start()
         {
             RegisterForMouseClick();
-            currentHealthPoints = maxHealthPoints;
+            SetCurrentMaxHealth();
             PutWeaponInHand();
 
+            OverrideAnimatorController();
+
             spawnPoint = GameObject.FindGameObjectWithTag("Respawn").transform;
+        }
+
+        private void SetCurrentMaxHealth()
+        {
+            currentHealthPoints = maxHealthPoints;
+        }
+
+        private void OverrideAnimatorController()
+        {
+            var animator = GetComponent<Animator>();
+            animator.runtimeAnimatorController = animatorOverrideController;
+            animatorOverrideController["DEFAULT ATTACK"] = weaponInUse.GetAttackAnimationClip(); //TODOr remove const
         }
 
         private void PutWeaponInHand()
