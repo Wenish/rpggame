@@ -2,51 +2,56 @@ using System;
 using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
 using UnityEngine.AI;
+using RPG.CameraUI; //TODO consider re-wiring
 
-[RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(AICharacterControl))]
-[RequireComponent(typeof (ThirdPersonCharacter))]
-public class PlayerMovement : MonoBehaviour
+namespace RPG.Characters
 {
-    CameraRaycaster cameraRaycaster = null;
-    AICharacterControl aICharacterControl = null;
-    GameObject walkTarget = null;
 
-    [SerializeField]
-    const int walkableLayerNumber = 8;
-
-    [SerializeField]
-    const int enemyLayerNumber = 9;
-
-    void Start()
+    [RequireComponent(typeof(NavMeshAgent))]
+    [RequireComponent(typeof(AICharacterControl))]
+    [RequireComponent(typeof(ThirdPersonCharacter))]
+    public class PlayerMovement : MonoBehaviour
     {
-        cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
-        aICharacterControl = GetComponent<AICharacterControl>();
-        walkTarget = new GameObject("walkTarget");
+        CameraRaycaster cameraRaycaster = null;
+        AICharacterControl aICharacterControl = null;
+        GameObject walkTarget = null;
 
-        cameraRaycaster.notifyMouseClickObservers += ProcessMouseClick;
-    }
+        [SerializeField]
+        const int walkableLayerNumber = 8;
 
-    void ProcessMouseClick(RaycastHit raycastHit, int layerHit)
-    {
-        switch(layerHit)
+        [SerializeField]
+        const int enemyLayerNumber = 9;
+
+        void Start()
         {
-            case enemyLayerNumber:
-                //navigate to the enemy
-                GameObject enemy = raycastHit.collider.gameObject;
-                aICharacterControl.SetTarget(enemy.transform);
-                break;
-            case walkableLayerNumber:
-                //navigate to point on the ground
-                walkTarget.transform.position = raycastHit.point;
-                aICharacterControl.SetTarget(walkTarget.transform);
-                break;
-            default:
-                Debug.LogWarning("Don't know how to handle mouse click");
-                return;
-            
+            cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
+            aICharacterControl = GetComponent<AICharacterControl>();
+            walkTarget = new GameObject("walkTarget");
+
+            cameraRaycaster.notifyMouseClickObservers += ProcessMouseClick;
         }
 
-    }
-}
+        void ProcessMouseClick(RaycastHit raycastHit, int layerHit)
+        {
+            switch (layerHit)
+            {
+                case enemyLayerNumber:
+                    //navigate to the enemy
+                    GameObject enemy = raycastHit.collider.gameObject;
+                    aICharacterControl.SetTarget(enemy.transform);
+                    break;
+                case walkableLayerNumber:
+                    //navigate to point on the ground
+                    walkTarget.transform.position = raycastHit.point;
+                    aICharacterControl.SetTarget(walkTarget.transform);
+                    break;
+                default:
+                    Debug.LogWarning("Don't know how to handle mouse click");
+                    return;
 
+            }
+
+        }
+    }
+
+}

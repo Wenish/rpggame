@@ -2,53 +2,56 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent (typeof(CameraRaycaster))]
-public class CursorAffordance : MonoBehaviour {
+namespace RPG.CameraUI
+{
+    [RequireComponent (typeof(CameraRaycaster))]
+    public class CursorAffordance : MonoBehaviour {
 
-    [SerializeField]
-    Texture2D walkCursor = null;
+        [SerializeField]
+        Texture2D walkCursor = null;
 
-    [SerializeField]
-    Texture2D targetCursor = null;
+        [SerializeField]
+        Texture2D targetCursor = null;
 
-    [SerializeField]
-    Texture2D unknownCursor = null;
+        [SerializeField]
+        Texture2D unknownCursor = null;
 
-    [SerializeField]
-    Vector2 cursorHotspot = new Vector2(0, 0);
+        [SerializeField]
+        Vector2 cursorHotspot = new Vector2(0, 0);
 
-    [SerializeField]
-    const int walkableLayerNumber = 8;
+        [SerializeField]
+        const int walkableLayerNumber = 8;
 
-    [SerializeField]
-    const int enemyLayerNumber = 9;
+        [SerializeField]
+        const int enemyLayerNumber = 9;
 
 
 
-    CameraRaycaster cameraRaycaster;
+        CameraRaycaster cameraRaycaster;
 
-	// Use this for initialization
-	void Start () {
-        cameraRaycaster = GetComponent<CameraRaycaster>();
-        cameraRaycaster.notifyLayerChangeObservers += OnLayerChanged; // registering delegate
-	}
+	    // Use this for initialization
+	    void Start () {
+            cameraRaycaster = GetComponent<CameraRaycaster>();
+            cameraRaycaster.notifyLayerChangeObservers += OnLayerChanged; // registering delegate
+	    }
 	
-	// Should only be called when layer has been changed
-	void OnLayerChanged (int newLayer) {
-        print("Cursor Affordance delegate layer changed");
-        switch(newLayer)
-            {
-            case walkableLayerNumber:
-                Cursor.SetCursor(walkCursor, cursorHotspot, CursorMode.Auto);
-                break;
-            case enemyLayerNumber:
-                Cursor.SetCursor(targetCursor, cursorHotspot, CursorMode.Auto);
-                break;
-            default:
-                Cursor.SetCursor(unknownCursor, cursorHotspot, CursorMode.Auto);
-                return;
-        }
-	}
+	    // Should only be called when layer has been changed
+	    void OnLayerChanged (int newLayer) {
+            print("Cursor Affordance delegate layer changed");
+            switch(newLayer)
+                {
+                case walkableLayerNumber:
+                    Cursor.SetCursor(walkCursor, cursorHotspot, CursorMode.Auto);
+                    break;
+                case enemyLayerNumber:
+                    Cursor.SetCursor(targetCursor, cursorHotspot, CursorMode.Auto);
+                    break;
+                default:
+                    Cursor.SetCursor(unknownCursor, cursorHotspot, CursorMode.Auto);
+                    return;
+            }
+	    }
 
-    //TODO consider de-registering OnLayerChanged on leaving all game scenes
+        //TODO consider de-registering OnLayerChanged on leaving all game scenes
+    }
 }

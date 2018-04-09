@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 54825178387380342}
   - component: {fileID: 114057548083395236}
   - component: {fileID: 114026092475280770}
-  - component: {fileID: 114070884080382942}
+  - component: {fileID: 114124724972015590}
   m_Layer: 0
   m_Name: ProjectileFast
   m_TagString: Untagged
@@ -245,7 +245,7 @@ MonoBehaviour:
   m_UseTorque: 1
   m_MaxAngularVelocity: 25
   m_JumpPower: 4
---- !u!114 &114070884080382942
+--- !u!114 &114124724972015590
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -253,10 +253,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1452589115390902}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47c4ee40a4406ed4aaed2fd984a93597, type: 3}
+  m_Script: {fileID: 11500000, guid: 5862dfc2c3f4dec4e984c8348e17469d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileSpeed: 30
+  projectileSpeed: 100
+  shooter: {fileID: 0}
 --- !u!135 &135599789983413844
 SphereCollider:
   m_ObjectHideFlags: 1
