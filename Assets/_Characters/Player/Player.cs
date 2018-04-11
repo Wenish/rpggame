@@ -19,8 +19,8 @@ namespace RPG.Characters
         [SerializeField] float maxHealthPoints = 100f;
         [SerializeField] float attackDamage = 10;
         [SerializeField] Transform spawnPoint = null;
-        [SerializeField] Weapon weaponInUse;
-        [SerializeField] AnimatorOverrideController animatorOverrideController;
+        [SerializeField] Weapon weaponInUse = null;
+        [SerializeField] AnimatorOverrideController animatorOverrideController = null;
 
         Animator animator;
         float currentHealthPoints;
