@@ -1222,7 +1222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93b9773a1d5eef74087e56d04d507990, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  energyBar: {fileID: 0}
+  energyBar: {fileID: 737530807}
   maxEnergyPoints: 100
 --- !u!1001 &1912424128
 Prefab:
