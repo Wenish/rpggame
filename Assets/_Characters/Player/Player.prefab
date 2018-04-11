@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 114795111345735788}
   - component: {fileID: 195172973117446222}
   - component: {fileID: 114548229136915166}
+  - component: {fileID: 114406311562688692}
   m_Layer: 12
   m_Name: Player
   m_TagString: Player
@@ -30,7 +31,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 149790}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.79, y: 0, z: -8.13}
+  m_LocalPosition: {x: -35.07602, y: 9.712112, z: -44.04167}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4641378313239312}
@@ -2446,6 +2447,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b0e8d40c964b9940b02e523fb0194bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114406311562688692
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93b9773a1d5eef74087e56d04d507990, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  energyBar: {fileID: 0}
+  maxEnergyPoints: 100
+  pointsPerHit: 10
 --- !u!114 &114548229136915166
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2483,8 +2498,6 @@ MonoBehaviour:
   enemyLayer: 9
   maxHealthPoints: 1500
   attackDamage: 10
-  attackSpeed: 0.5
-  maxAttackRange: 2
   spawnPoint: {fileID: 0}
   weaponInUse: {fileID: 11400000, guid: cbb895b1fd394614ea0c1de4ccf922b8, type: 2}
   animatorOverrideController: {fileID: 22100000, guid: a3ceab425a5c4a641be1851430d79054,
