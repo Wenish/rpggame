@@ -14,7 +14,7 @@ TagManager:
   - UI
   - 
   - 
-  - Walkable
+  - PotentiallyWalkable
   - Enemy
   - Stiff
   - LP_Fire

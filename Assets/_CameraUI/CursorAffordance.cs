@@ -7,8 +7,6 @@ namespace RPG.CameraUI
     [RequireComponent (typeof(CameraRaycaster))]
     public class CursorAffordance : MonoBehaviour {
 
-        [SerializeField]
-        Texture2D walkCursor = null;
 
         [SerializeField]
         Texture2D targetCursor = null;
@@ -40,9 +38,6 @@ namespace RPG.CameraUI
             print("Cursor Affordance delegate layer changed");
             switch(newLayer)
                 {
-                case walkableLayerNumber:
-                    Cursor.SetCursor(walkCursor, cursorHotspot, CursorMode.Auto);
-                    break;
                 case enemyLayerNumber:
                     Cursor.SetCursor(targetCursor, cursorHotspot, CursorMode.Auto);
                     break;
