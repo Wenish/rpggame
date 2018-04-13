@@ -16,20 +16,22 @@ namespace RPG.Characters
         AICharacterControl aICharacterControl = null;
         GameObject walkTarget = null;
 
-        [SerializeField]
-        const int walkableLayerNumber = 8;
-
-        [SerializeField]
-        const int enemyLayerNumber = 9;
-
         void Start()
         {
             cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
             aICharacterControl = GetComponent<AICharacterControl>();
             walkTarget = new GameObject("walkTarget");
-
-            cameraRaycaster.notifyMouseClickObservers += ProcessMouseClick;
+            
             cameraRaycaster.onMouseOverPotentiallyWalkable += OnMouseOverPotentiallyWalkable;
+            cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
+        }
+
+        private void OnMouseOverEnemy(Enemy enemy)
+        {
+            if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(1))
+            {
+                aICharacterControl.SetTarget(enemy.transform);
+            }
         }
 
         private void OnMouseOverPotentiallyWalkable(Vector3 destination)
@@ -40,23 +42,6 @@ namespace RPG.Characters
                 walkTarget.transform.position = destination;
                 aICharacterControl.SetTarget(walkTarget.transform);
             }
-        }
-
-        void ProcessMouseClick(RaycastHit raycastHit, int layerHit)
-        {
-            switch (layerHit)
-            {
-                case enemyLayerNumber:
-                    //navigate to the enemy
-                    GameObject enemy = raycastHit.collider.gameObject;
-                    aICharacterControl.SetTarget(enemy.transform);
-                    break;
-                default:
-                    Debug.LogWarning("Don't know how to handle mouse click");
-                    return;
-
-            }
-
         }
     }
 
