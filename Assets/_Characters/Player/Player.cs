@@ -20,6 +20,10 @@ namespace RPG.Characters
         [SerializeField] Weapon weaponInUse = null;
         [SerializeField] AnimatorOverrideController animatorOverrideController = null;
 
+        // Temporarily serialized for debug
+        [SerializeField]
+        SpecialAbilityConfig ability1;
+
         Animator animator;
         float currentHealthPoints;
         CameraRaycaster cameraRaycaster;
@@ -39,6 +43,7 @@ namespace RPG.Characters
             SetCurrentMaxHealth();
             PutWeaponInHand();
             SetupRuntimeAnimator();
+            ability1.AddComponent(gameObject);
 
             spawnPoint = GameObject.FindGameObjectWithTag("Respawn").transform;
         }
@@ -99,9 +104,22 @@ namespace RPG.Characters
             if (Input.GetMouseButton(0) && IsTargetInRange(enemy.gameObject))
             {
                 AttackTarget(enemy);
+            } else if(Input.GetMouseButtonDown(1))
+            {
+                AttemptSpecialAbility1(enemy);
             }
         }
 
+        private void AttemptSpecialAbility1(Enemy enemy)
+        {
+            var energyComponent = GetComponent<Energy>();
+            //TODO read from ability
+            if (energyComponent.IsEnergyAvailable(10f))
+            {
+                energyComponent.ConsumeEnergy(10f);
+                // TODO Use the ability
+            }
+        }
 
         private void AttackTarget(Enemy enemy)
         {

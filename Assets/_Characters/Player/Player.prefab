@@ -2495,13 +2495,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfa02ff2dd8d7b44ba3b34751c83d31a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyLayer: 9
   maxHealthPoints: 1500
   attackDamage: 10
   spawnPoint: {fileID: 0}
   weaponInUse: {fileID: 11400000, guid: cbb895b1fd394614ea0c1de4ccf922b8, type: 2}
   animatorOverrideController: {fileID: 22100000, guid: a3ceab425a5c4a641be1851430d79054,
     type: 2}
+  ability1: {fileID: 11400000, guid: 2d8a2253e5f5af642842f7e11367e75c, type: 2}
 --- !u!137 &137647281158860526
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
