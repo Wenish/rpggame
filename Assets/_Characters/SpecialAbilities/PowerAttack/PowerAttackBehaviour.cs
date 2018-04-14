@@ -9,21 +9,15 @@ namespace RPG.Characters
 
         PowerAttackConfig config;
 
-        public void SetConfig(PowerAttackConfig configToSet)
-        {
-            this.config = configToSet;
-        }
-
         // Use this for initialization
         void Start()
         {
             print("PowerAttack behavior attached to " + gameObject.name);
         }
 
-        // Update is called once per frame
-        void Update()
+        public void SetConfig(PowerAttackConfig configToSet)
         {
-
+            this.config = configToSet;
         }
         
         public void Use(AbilityUseParams useParams)
