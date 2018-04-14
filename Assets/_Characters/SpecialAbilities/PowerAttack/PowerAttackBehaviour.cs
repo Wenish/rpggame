@@ -26,9 +26,11 @@ namespace RPG.Characters
 
         }
         
-        public void Use()
+        public void Use(AbilityUseParams useParams)
         {
-
+            print("PowerAttack used by: " + gameObject.name);
+            float damageToDeal = useParams.baseDamage + config.GetExtraDamage();
+            useParams.target.TakeDamage(damageToDeal);
         }
     } 
 }

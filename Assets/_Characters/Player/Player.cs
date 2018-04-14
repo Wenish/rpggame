@@ -15,14 +15,14 @@ namespace RPG.Characters
     public class Player : MonoBehaviour, IDamageable
     {
         [SerializeField] float maxHealthPoints = 100f;
-        [SerializeField] float attackDamage = 10;
+        [SerializeField] float baseAttackDamage = 10;
         [SerializeField] Transform spawnPoint = null;
         [SerializeField] Weapon weaponInUse = null;
         [SerializeField] AnimatorOverrideController animatorOverrideController = null;
 
         // Temporarily serialized for debug
         [SerializeField]
-        SpecialAbilityConfig ability1;
+        SpecialAbility[] abilities;
 
         Animator animator;
         float currentHealthPoints;
@@ -43,7 +43,7 @@ namespace RPG.Characters
             SetCurrentMaxHealth();
             PutWeaponInHand();
             SetupRuntimeAnimator();
-            ability1.AddComponent(gameObject);
+            abilities[0].AttachComponentTo(gameObject);
 
             spawnPoint = GameObject.FindGameObjectWithTag("Respawn").transform;
         }
@@ -106,18 +106,20 @@ namespace RPG.Characters
                 AttackTarget(enemy);
             } else if(Input.GetMouseButtonDown(1))
             {
-                AttemptSpecialAbility1(enemy);
+                AttemptSpecialAbility(0, enemy);
             }
         }
 
-        private void AttemptSpecialAbility1(Enemy enemy)
+        private void AttemptSpecialAbility(int abilityIndex, Enemy enemy)
         {
             var energyComponent = GetComponent<Energy>();
-            //TODO read from ability
-            if (energyComponent.IsEnergyAvailable(10f))
+            var energyCost = abilities[abilityIndex].GetEnergyCost();
+
+            if (energyComponent.IsEnergyAvailable(energyCost))
             {
-                energyComponent.ConsumeEnergy(10f);
-                // TODO Use the ability
+                energyComponent.ConsumeEnergy(energyCost);
+                var abilityParams = new AbilityUseParams(enemy, baseAttackDamage);
+                abilities[abilityIndex].Use(abilityParams);
             }
         }
 
@@ -127,7 +129,7 @@ namespace RPG.Characters
             {
                 animator.SetTrigger("Attack"); //TODO make const;
                 transform.LookAt(enemy.transform);
-                enemy.TakeDamage(attackDamage);
+                enemy.TakeDamage(baseAttackDamage);
                 lastHitTime = Time.time;
             }
         }
