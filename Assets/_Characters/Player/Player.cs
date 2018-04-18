@@ -50,7 +50,8 @@ namespace RPG.Characters
         {
             ReduceHealth(damage);
 
-            if (currentHealthPoints <= 0)
+            bool playerDies = currentHealthPoints - damage <= 0;
+            if (playerDies)
             {
                 StartCoroutine(KillPlayer());
             }
