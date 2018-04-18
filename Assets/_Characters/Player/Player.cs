@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 //TODO consider re-wiring
 using RPG.CameraUI;
@@ -16,7 +17,6 @@ namespace RPG.Characters
     {
         [SerializeField] float maxHealthPoints = 100f;
         [SerializeField] float baseAttackDamage = 10;
-        [SerializeField] Transform spawnPoint = null;
         [SerializeField] Weapon weaponInUse = null;
         [SerializeField] AnimatorOverrideController animatorOverrideController = null;
 
@@ -44,23 +44,30 @@ namespace RPG.Characters
             PutWeaponInHand();
             SetupRuntimeAnimator();
             abilities[0].AttachComponentTo(gameObject);
-
-            spawnPoint = GameObject.FindGameObjectWithTag("Respawn").transform;
         }
 
         public void TakeDamage(float damage)
         {
-            currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+            ReduceHealth(damage);
+
             if (currentHealthPoints <= 0)
             {
-                NavMeshAgent agent = GetComponent<NavMeshAgent>();
-                agent.enabled = false;
-                Transform transform = GetComponent<Transform>();
-                transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
-                agent.enabled = true;
-                agent.SetDestination(spawnPoint.position);
-                currentHealthPoints = maxHealthPoints;
+                StartCoroutine(KillPlayer());
             }
+        }
+
+        private void ReduceHealth(float damage)
+        {
+            currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+            //Todo Play Sound
+        }
+
+        IEnumerator KillPlayer()
+        {
+            print("Death sound");
+            print("Death animation");
+            yield return new WaitForSecondsRealtime(2f);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         private void SetCurrentMaxHealth()
